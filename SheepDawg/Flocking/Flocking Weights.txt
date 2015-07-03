@@ -1,0 +1,34 @@
+Local attraction
+	Others of same - short range, semi-strong
+Remote attraction
+	Desired goal - long range, fairly week
+Repulsions
+	Threats - variable
+	Too close - very short range, very strong
+	Impassible - very short range, infinite
+
+Each object sums up vector of weights to derive an impulse
+Impulse causes acceleration until ojbect is at impulse velocity
+Iterative resolution - object cannot be moved to an impassible space
+
+Obects have size, mass, max velocity, max acceleration, max turn rate.
+
+Goal objects
+	Water
+	Food
+	Shelter
+Basic objects
+	Sheep - moderate local
+	Black Sheep - low local
+	Lambs - moderate local, high goal (sheep)
+	Goats - low local
+	Billy goats - low local, medium goal (food)
+	Kids - moderate local
+	Geese - low local, medium goal
+	Cats - very low local
+Threats
+	Sheepdog
+	Sheepdog bark
+	Wolf
+	Weather?
+	

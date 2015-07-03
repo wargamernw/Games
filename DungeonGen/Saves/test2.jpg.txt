@@ -1,0 +1,236 @@
+0 - Entrance To East
+Description
+Encounter
+Treasure
+1 - Exit To East
+Description
+Encounter
+Treasure
+2 - Small Room 3x3
+Description
+Encounter
+Treasure
+3 - Small Room 3x4
+Description
+Encounter
+Treasure
+4 - Med Room 4x5
+Description
+Encounter
+Treasure
+5 - Med Room 6x8
+Description
+Encounter
+Treasure
+6 - Small Room 3x3
+Description
+Encounter
+Treasure
+7 - Large Room 10x8
+Description
+Encounter
+Treasure
+8 - Small Room 4x4
+Description
+Encounter
+Treasure
+9 - Large Room 8x10
+Description
+Encounter
+Treasure
+10 - Med Room 5x5
+Description
+Encounter
+Treasure
+11 - Small Room 4x3
+Description
+Encounter
+Treasure
+12 - Med Room 6x8 No North Corner
+Description
+Encounter
+Treasure
+13 - Med Room 5x5
+Description
+Encounter
+Treasure
+14 - Small Room 3x3
+Description
+Encounter
+Treasure
+15 - Med Room 5x5
+Description
+Encounter
+Treasure
+16 - Med Room 6x7
+Description
+Encounter
+Treasure
+17 - Small Room 4x3
+Description
+Encounter
+Treasure
+18 - Small Room 3x3
+Description
+Encounter
+Treasure
+19 - Small Room 3x4
+Description
+Encounter
+Treasure
+20 - Small Room 3x4
+Description
+Encounter
+Treasure
+21 - Med Room 4x6
+Description
+Encounter
+Treasure
+22 - Med Room 5x4
+Description
+Encounter
+Treasure
+23 - Small Room 4x3
+Description
+Encounter
+Treasure
+24 - Med Room 6x5
+Description
+Encounter
+Treasure
+25 - Med Room 6x5
+Description
+Encounter
+Treasure
+26 - Small Room 3x4
+Description
+Encounter
+Treasure
+27 - Small Room 3x4
+Description
+Encounter
+Treasure
+28 - Small Room 3x4
+Description
+Encounter
+Treasure
+29 - Small Room 3x4
+Description
+Encounter
+Treasure
+30 - Small Room 4x4
+Description
+Encounter
+Treasure
+31 - Small Room 3x3
+Description
+Encounter
+Treasure
+32 - Med Room 5x5
+Description
+Encounter
+Treasure
+33 - Med Room 4x5
+Description
+Encounter
+Treasure
+34 - Small Room 4x3
+Description
+Encounter
+Treasure
+35 - Small Room 4x3
+Description
+Encounter
+Treasure
+36 - Med Room 5x4
+Description
+Encounter
+Treasure
+37 - Small Room 3x3
+Description
+Encounter
+Treasure
+38 - Small Room 4x4
+Description
+Encounter
+Treasure
+39 - Small Room 4x3
+Description
+Encounter
+Treasure
+40 - Small Room 3x4
+Description
+Encounter
+Treasure
+41 - Small Room 3x4
+Description
+Encounter
+Treasure
+42 - Small Room 3x3
+Description
+Encounter
+Treasure
+43 - Small Room 3x3
+Description
+Encounter
+Treasure
+44 - Small Room 3x3
+Description
+Encounter
+Treasure
+45 - Small Room 4x3
+Description
+Encounter
+Treasure
+46 - Small Room 3x3
+Description
+Encounter
+Treasure
+47 - Small Room 3x3
+Description
+Encounter
+Treasure
+48 - Small Room 3x3
+Description
+Encounter
+Treasure
+49 - Small Room 3x3
+Description
+Encounter
+Treasure
+50 - Small Room 3x4
+Description
+Encounter
+Treasure
+51 - Small Room 4x3
+Description
+Encounter
+Treasure
+52 - Small Room 4x3
+Description
+Encounter
+Treasure
+53 - Small Room 4x3
+Description
+Encounter
+Treasure
+54 - Small Room 4x3
+Description
+Encounter
+Treasure
+55 - Small Room 3x4
+Description
+Encounter
+Treasure
+56 - Small Room 3x3
+Description
+Encounter
+Treasure
+57 - Small Room 3x3
+Description
+Encounter
+Treasure
+58 - Small Room 3x3
+Description
+Encounter
+Treasure
