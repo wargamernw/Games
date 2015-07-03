@@ -10,34 +10,37 @@
 
     public class VisualContainer : FrameworkElement
     {
-        private VisualCollection children;
+        public VisualCollection children;
 
         public VisualContainer()
         {
-            children = new VisualCollection(this);
+            this.children = new VisualCollection(this);
+        }
 
+        public void AddVisuals()
+        {
             var visual = new DrawingVisual();
-            children.Add(visual);
+            this.children.Add(visual);
             using (var dc = visual.RenderOpen())
             {
-                dc.DrawLine(new Pen(Brushes.Black, 1), new Point(0, 0), new Point(400, 400));
-                dc.DrawLine(new Pen(Brushes.Black, 1), new Point(0, 400), new Point(400, 0));
+                dc.DrawLine(new Pen(Brushes.Red, 1), new Point(0, 0), new Point(400, 400));
+                dc.DrawLine(new Pen(Brushes.Red, 1), new Point(0, 400), new Point(400, 0));
             }
         }
 
         protected override int VisualChildrenCount
         {
-            get { return children.Count; }
+            get { return this.children.Count; }
         }
 
         protected override Visual GetVisualChild(int index)
         {
-            if (index < 0 || index >= children.Count)
+            if (index < 0 || index >= this.children.Count)
             {
                 throw new ArgumentOutOfRangeException();
             }
 
-            return children[index];
+            return this.children[index];
         }
     }
 }
