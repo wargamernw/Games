@@ -3,120 +3,214 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Diagnostics;
+	using System.IO;
 	using System.Linq;
+	using System.Runtime.Serialization;
 	using System.Text;
 	using System.Threading.Tasks;
 	using System.Windows;
-	using System.Windows.Media;
+	using System.Xml;
 
 	public class MovingObject
 	{
-		public Point Location { get; set; }
+		private MovingObjectController controller;
 
-		public Point Destination { get; set; }
+		public MovingObjectData Data { get; set; }
 
-		// Pixel Points per second
-		public double Velocity { get; private set; }
+		public MovingObjectDataTemporal Pos { get; set; }
 
-		// Pixel Points per second
-		public double MaxVelocity { get; set; }
-
-		// Pixel Points per second/second
-		public double Accelleration { get; set; }
-
-		// Radians per second
-		public double TurnRate { get; set; }
-
-		// Radians
-		public double Facing { get; set; }
-
-		public MovingObject(Point loc, double maxVel, double accelleration, double turnRate, double facing)
+		public MovingObject(MovingObjectController controller)
 		{
-			this.Location = loc;
-			this.MaxVelocity = maxVel;
-			this.Velocity = 0;
-			this.Accelleration = accelleration;
-			this.TurnRate = turnRate;
-			this.Facing = facing;
+			this.controller = controller;
+			this.Data = new MovingObjectData();
+			this.Pos = new MovingObjectDataTemporal();
+		}
+
+		public void Load(string dataFile)
+		{
+			try
+			{
+				using (var fs = new FileStream(dataFile, FileMode.OpenOrCreate))
+				{
+					DataContractSerializer ser = new DataContractSerializer(typeof(MovingObjectData));
+					this.Data = (MovingObjectData)ser.ReadObject(fs);
+				}
+			}
+			catch (Exception exc)
+			{
+				Console.WriteLine("The serialization operation failed: {0} StackTrace: {1}", exc.Message, exc.StackTrace);
+			}
+		}
+
+		public void LoadTemporal(string dataFile)
+		{
+			try
+			{
+				using (var fs = new FileStream(dataFile, FileMode.OpenOrCreate))
+				{
+					DataContractSerializer ser = new DataContractSerializer(typeof(MovingObjectDataTemporal));
+					this.Pos = (MovingObjectDataTemporal)ser.ReadObject(fs);
+				}
+			}
+			catch (Exception exc)
+			{
+				Console.WriteLine("The serialization operation failed: {0} StackTrace: {1}", exc.Message, exc.StackTrace);
+			}
+		}
+
+		public void Save(string dataFile)
+		{
+			try
+			{
+				using (var fs = new FileStream(dataFile, FileMode.OpenOrCreate))
+				{
+					DataContractSerializer ser = new DataContractSerializer(typeof(MovingObjectData));
+					ser.WriteObject(fs, this.Data);
+				}
+			}
+			catch (Exception exc)
+			{
+				Console.WriteLine("The serialization operation failed: {0} StackTrace: {1}", exc.Message, exc.StackTrace);
+			}
+		}
+
+		public void SaveTemporal(string dataFile)
+		{
+			try
+			{
+				using (var fs = new FileStream(dataFile, FileMode.OpenOrCreate))
+				{
+					DataContractSerializer ser = new DataContractSerializer(typeof(MovingObjectDataTemporal));
+					ser.WriteObject(fs, this.Pos);
+				}
+			}
+			catch (Exception exc)
+			{
+				Console.WriteLine("The serialization operation failed: {0} StackTrace: {1}", exc.Message, exc.StackTrace);
+			}
 		}
 
 		public void OnTick(double elapsed)
 		{
-			if (this.Location != this.Destination)
+			var impulse = this.CheckCollision();
+
+			var delta = this.Pos.Destination - this.Pos.Location;
+
+			if (delta.LengthSquared > Math.Pow(this.Data.Radius * 1.5, 2.0)
+				|| impulse.LengthSquared > 0)
 			{
-				var deltaX = this.Destination.X - this.Location.X;
-				var deltaY = this.Destination.Y - this.Location.Y;
+				var dist = Math.Sqrt(delta.X * delta.X + delta.Y * delta.Y);
 
-				var dist = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-
-				// Are we there yet?
-				if (dist < this.Velocity * elapsed)
+				// Are we there yet and not being pushed?
+				if (dist < this.Pos.Velocity * elapsed
+					&& impulse.LengthSquared == 0)
 				{
-					this.Location = this.Destination;
-					this.Velocity = 0;
+					this.Pos.Location = this.Pos.Destination;
+					this.Pos.Velocity = 0;
 					return;
 				}
 
-				// How long to reach 0;
-				var impulses = this.Velocity / this.Accelleration;
+				this.CheckVelocity(dist, elapsed);
 
-				var drift = this.Velocity * impulses;
+				this.CheckFacing(elapsed);
+				
+				Vector targetMove = new Vector();
+				targetMove.X = Math.Cos(this.Pos.Facing);
+				targetMove.Y = Math.Sin(this.Pos.Facing);
+				targetMove.Normalize();
 
-				// Calculate Velocity
-				if (dist < drift)
+				targetMove += impulse;
+
+				targetMove *= this.Pos.Velocity * elapsed;
+				Debug.Assert(!double.IsNaN(targetMove.X) && !double.IsNaN(targetMove.Y));
+				this.Pos.Location += targetMove;
+			}
+		}
+
+		private void CheckVelocity(double dist, double elapsed)
+		{
+			// How long to reach 0;
+			var impulses = this.Pos.Velocity / this.Data.Accelleration;
+
+			var drift = this.Pos.Velocity * impulses;
+
+			// Slow down
+			if (dist < drift)
+			{
+				this.Pos.Velocity -= this.Data.Accelleration * elapsed;
+
+				if (this.Pos.Velocity < this.Data.Accelleration * elapsed)
 				{
-					this.Velocity -= this.Accelleration * elapsed;
+					this.Pos.Velocity = this.Data.Accelleration * elapsed;
+				}
+			}
+			// Speed up
+			else if (this.Pos.Velocity < this.Data.MaxVelocity
+				&& (dist > drift * 2
+					|| this.Pos.Velocity == 0.0))
+			{
+				this.Pos.Velocity = Math.Min(this.Data.MaxVelocity, this.Pos.Velocity + this.Data.Accelleration * elapsed);
+			}
+		}
 
-					if (this.Velocity < this.Accelleration * elapsed)
+		private void CheckFacing(double elapsed)
+		{
+			var delta = this.Pos.Destination - this.Pos.Location;
+			var move = new Vector(delta.X, delta.Y);
+			move.Normalize();
+
+			// Calculate facing
+			var targetFacing = Math.Atan2(move.Y, move.X);
+
+			var deltaFacing = targetFacing - this.Pos.Facing;
+
+			if (deltaFacing > Math.PI)
+			{
+				deltaFacing -= Math.PI * 2.0;
+			}
+			else if (deltaFacing < -Math.PI)
+			{
+				deltaFacing += Math.PI * 2.0;
+			}
+
+			if (Math.Abs(this.Pos.Facing - targetFacing) < this.Data.TurnRate * elapsed)
+			{
+				this.Pos.Facing = targetFacing;
+			}
+			else if (deltaFacing > 0)
+			{
+				this.Pos.Facing += this.Data.TurnRate * elapsed;
+			}
+			else if (deltaFacing < 0)
+			{
+				this.Pos.Facing -= this.Data.TurnRate * elapsed;
+			}
+		}
+
+		private Vector CheckCollision()
+		{
+			var push = new Vector();
+
+			foreach (var obj in this.controller.Objects)
+			{
+				var delta = new Vector(this.Pos.Location.X - obj.Pos.Location.X, this.Pos.Location.Y - obj.Pos.Location.Y);
+
+				if (delta.LengthSquared > 0)
+				{
+					if (delta.LengthSquared < Math.Pow(obj.Data.Radius + this.Data.Radius, 2.0))
 					{
-						this.Velocity = this.Accelleration * elapsed;
+						delta.Normalize();
+						push += delta * 1.2;
+					}
+					else if (delta.LengthSquared < Math.Pow(obj.Data.Radius * 2.0 + this.Data.Radius * 2.0, 2.0))
+					{
+						delta.Normalize();
+						push += delta / 2.0;
 					}
 				}
-				else if (this.Velocity < this.MaxVelocity 
-					&& (dist > drift * 2
-						|| this.Velocity == 0.0))
-				{
-					this.Velocity = Math.Min(this.MaxVelocity, this.Velocity + this.Accelleration * elapsed);
-				}
-
-				var move = new Vector(deltaX, deltaY);
-				move.Normalize();
-				
-				// Calculate facing
-				var targetFacing = Math.Atan2(move.Y, move.X);
-
-				var deltaFacing = targetFacing - this.Facing;
-
-				if (deltaFacing > Math.PI)
-				{
-					deltaFacing -= Math.PI * 2.0;
-				}
-				else if (deltaFacing < -Math.PI)
-				{
-					deltaFacing += Math.PI * 2.0;
-				}
-
-				if (Math.Abs(this.Facing - targetFacing) < this.TurnRate * elapsed)
-				{
-					this.Facing = targetFacing;
-				}
-				else if (deltaFacing > 0)
-				{
-					this.Facing += this.TurnRate * elapsed;
-				}
-				else if (deltaFacing < 0)
-				{
-					this.Facing -= this.TurnRate * elapsed;
-				}
-
-				Vector targetMove = new Vector();
-
-				targetMove.X = Math.Cos(this.Facing);
-				targetMove.Y = Math.Sin(this.Facing);
-				targetMove.Normalize();
-				targetMove *= this.Velocity * elapsed;
-				this.Location += targetMove;
 			}
+
+			return push;
 		}
 	}
 }
