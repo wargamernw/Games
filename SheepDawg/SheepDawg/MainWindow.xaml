@@ -12,11 +12,12 @@
         Background="Transparent"
         HorizontalScrollBarVisibility="Auto">
         <Grid
-            x:Name="BackgroundGrid"
+			x:Name="BackgroundGrid"
             Height="1080"
             Width="1920"
             RenderTransformOrigin="0.5,0.5"
-            MouseWheel="BackgroundGrid_MouseWheel">
+            MouseWheel="BackgroundGrid_MouseWheel"
+            MouseDown="BackgroundGrid_MouseDown">
             <Grid.LayoutTransform>
                 <ScaleTransform ScaleX="1" ScaleY="1"/>
             </Grid.LayoutTransform>
