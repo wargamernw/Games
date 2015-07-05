@@ -118,7 +118,7 @@ namespace DungeonGen
 			{
 				mY = value;
 			}
-        }
+		}
 	}
 
 	public class CellData
