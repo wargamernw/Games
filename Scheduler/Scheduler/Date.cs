@@ -7,20 +7,11 @@ using System.Threading.Tasks;
 
 namespace Scheduler
 {
-	public enum Month
+	public enum GameDay
 	{
-		Jan,
-		Feb,
-		Mar,
-		Apr,
-		May,
-		Jun,
-		Jul,
-		Aug,
-		Sep,
-		Oct,
-		Nov,
-		Dec
+		Thursday,
+		Sunday,
+		Monday
 	}
 
 	public enum TimeOfDay
@@ -28,26 +19,30 @@ namespace Scheduler
 		EarlyMorning,
 		Morning,
 		Afternoon,
-		Evening,
-		LateEvening
+		Night,
+		LateNight
 	}
 
 	[DataContract()]
 	class Date
 	{
 		[DataMember]
-		public Month Month { get; set; }
+		public int GameWeek 
+		{ 
+			get; 
+			set; 
+		}
 
 		[DataMember]
-		public int Day { get; set; }
+		public GameDay GameDay { get; set; }
 
 		[DataMember]
 		public TimeOfDay TimeOfDay { get; set; }
 
 		public Date()
 		{
-			this.Month = Month.Jan;
-			this.Day = 1;
+			this.GameWeek = 0;
+			this.GameDay = GameDay.Sunday;
 			this.TimeOfDay = TimeOfDay.Afternoon;
 		}
 	}

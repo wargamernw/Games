@@ -1,7 +1,31 @@
-<Team xmlns="http://schemas.datacontract.org/2004/07/Scheduler" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
-    <Division>ALEast</Division>
-    <Name/>
-    <Stadium/>
-    <TVMarket>0</TVMarket>
-    <Wins>0</Wins>
-</Team>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfTeam xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/Scheduler">
+	<Team>
+		<Division>NFCWest</Division>
+		<Name>Cardinals</Name>
+		<Stadium>University of Phoenix</Stadium>
+		<TVMarket>3</TVMarket>
+		<Wins>10</Wins>
+	</Team>
+	<Team>
+		<Division>NFCWest</Division>
+		<Name>49ers</Name>
+		<Stadium>Levi's</Stadium>
+		<TVMarket>6</TVMarket>
+		<Wins>8</Wins>
+	</Team>
+	<Team>
+		<Division>NFCWest</Division>
+		<Name>Rams</Name>
+		<Stadium>Edward Jones</Stadium>
+		<TVMarket>2</TVMarket>
+		<Wins>6</Wins>
+	</Team>
+	<Team>
+		<Division>NFCWest</Division>
+		<Name>Seahawks</Name>
+		<Stadium>CenturyLink</Stadium>
+		<TVMarket>7</TVMarket>
+		<Wins>13</Wins>
+	</Team>
+</ArrayOfTeam>

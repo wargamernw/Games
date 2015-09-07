@@ -5,14 +5,15 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Scheduler
 {
 	class Model
 	{
-		public const int TeamsMax = 32;
+		public const int TeamsMax = 4;
 
-		public const int StadiumsMax = 32;
+		public const int StadiumsMax = 4;
 
 		public List<Team> Teams = new List<Team>();
 
@@ -20,22 +21,15 @@ namespace Scheduler
 
 		public Model()
 		{
-
-		}
-
-		public void CreateSchema()
-		{
-			var team = new Team();
-
 			try
 			{
-				using (var fs = new FileStream("./Data/Teams.xml", FileMode.OpenOrCreate))
+				using (var fs = new FileStream("./Data/Teams.xml", FileMode.Open))
 				{
-					var ser = new DataContractSerializer(typeof(Team));
+					var ser = new DataContractSerializer(typeof(List<Team>));
 
-					for (int i = 0; i < TeamsMax; i++)
+					using (var reader = XmlReader.Create(fs))
 					{
-						ser.WriteObject(fs, team);
+						this.Teams = (List<Team>)ser.ReadObject(reader);
 					}
 				}
 			}
@@ -44,17 +38,72 @@ namespace Scheduler
 				Console.WriteLine("The serialization operation failed: {0} StackTrace: {1}", exc.Message, exc.StackTrace);
 			}
 
-			var stadium = new Stadium();
+			try
+			{
+				using (var fs = new FileStream("./Data/Stadiums.xml", FileMode.Open))
+				{
+					var ser = new DataContractSerializer(typeof(List<Stadium>));
+
+					using (var reader = XmlReader.Create(fs))
+					{
+						this.Stadiums = (List<Stadium>)ser.ReadObject(reader);
+					}
+				}
+			}
+			catch (Exception exc)
+			{
+				Console.WriteLine("The serialization operation failed: {0} StackTrace: {1}", exc.Message, exc.StackTrace);
+			}
+		}
+
+		public void CreateSchema()
+		{
+			this.Teams.Clear();
+			var team = new Team();
+
+			for (int i = 0; i < TeamsMax; i++)
+			{
+				this.Teams.Add(team);
+			}
 
 			try
 			{
-				using (var fs = new FileStream("./Data/Stadiums.xml", FileMode.OpenOrCreate))
+				using (var fs = new FileStream("./Data/Teams.xml", FileMode.Create))
 				{
-					var ser = new DataContractSerializer(typeof(Stadium));
+					var ser = new DataContractSerializer(typeof(List<Team>));
 
-					for (int i = 0; i < TeamsMax; i++)
+					var settings = new XmlWriterSettings() { Indent = true, IndentChars = "\t" };
+
+					using (var writer = XmlWriter.Create(fs, settings))
 					{
-						ser.WriteObject(fs, stadium);
+						ser.WriteObject(writer, this.Teams);
+					}
+				}
+			}
+			catch (Exception exc)
+			{
+				Console.WriteLine("The serialization operation failed: {0} StackTrace: {1}", exc.Message, exc.StackTrace);
+			}
+
+			this.Stadiums.Clear();
+			var stadium = new Stadium();
+
+			for (int i = 0; i < StadiumsMax; i++)
+			{
+				this.Stadiums.Add(stadium);
+			}
+
+			try
+			{
+				using (var fs = new FileStream("./Data/Stadiums.xml", FileMode.Create))
+				{
+					var ser = new DataContractSerializer(typeof(List<Stadium>));
+
+					var settings = new XmlWriterSettings() { Indent = true, IndentChars = "\t" };
+
+					using (var writer = XmlWriter.Create(fs, settings))
+					{
+						ser.WriteObject(writer, this.Stadiums);
 					}
 				}
 			}

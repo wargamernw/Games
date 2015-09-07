@@ -55,7 +55,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Calendar.cs" />
     <Compile Include="Date.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="GameDate.cs" />
+    <Compile Include="GameTime.cs" />
+    <Compile Include="GameWeek.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Stadium.cs" />
     <Compile Include="Team.cs" />

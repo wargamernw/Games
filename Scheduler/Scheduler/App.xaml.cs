@@ -15,6 +15,8 @@ namespace Scheduler
 	{
 		private Model dataModel = new Model();
 
+		private Calendar calendar;
+
 		public App()
 		{
 			string[] args = Environment.GetCommandLineArgs();
@@ -27,6 +29,9 @@ namespace Scheduler
 					System.Environment.Exit(1);
 				}
 			}
+
+			this.calendar = new Calendar(this.dataModel);
+			this.calendar.CreateSchedule();
 		}
 	}
 }
