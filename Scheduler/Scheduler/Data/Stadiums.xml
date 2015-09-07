@@ -1,0 +1,15 @@
+<Stadium xmlns="http://schemas.datacontract.org/2004/07/Scheduler" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+    <BlackoutDates>
+        <Date>
+            <Day>1</Day>
+            <Month>Jan</Month>
+            <TimeOfDay>Afternoon</TimeOfDay>
+        </Date>
+        <Date>
+            <Day>1</Day>
+            <Month>Jan</Month>
+            <TimeOfDay>Afternoon</TimeOfDay>
+        </Date>
+    </BlackoutDates>
+    <Name/>
+</Stadium>

@@ -1,0 +1,7 @@
+<Team xmlns="http://schemas.datacontract.org/2004/07/Scheduler" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+    <Division>ALEast</Division>
+    <Name/>
+    <Stadium/>
+    <TVMarket>0</TVMarket>
+    <Wins>0</Wins>
+</Team>
