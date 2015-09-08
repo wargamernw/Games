@@ -24,7 +24,7 @@ namespace Scheduler
 	}
 
 	[DataContract()]
-	class Date
+	public class Date
 	{
 		[DataMember]
 		public int GameWeek 

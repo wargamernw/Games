@@ -10,7 +10,7 @@ using System.Xml;
 namespace Scheduler
 {
 	[DataContract()]
-	class Team
+	public class Team
 	{
 		[DataMember]
 		public string Name { get; set; }

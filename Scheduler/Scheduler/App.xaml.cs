@@ -13,9 +13,9 @@ namespace Scheduler
 	/// </summary>
 	public partial class App : Application
 	{
-		private Model dataModel = new Model();
+		public Model dataModel = new Model();
 
-		private Calendar calendar;
+		public Calendar calendar = null;
 
 		public App()
 		{
@@ -30,8 +30,18 @@ namespace Scheduler
 				}
 			}
 
-			this.calendar = new Calendar(this.dataModel);
-			this.calendar.CreateSchedule();
+			this.Activated += (o, e) => 
+			{
+				if (calendar == null)
+				{
+					this.calendar = new Calendar(this.dataModel);
+					this.calendar.CreateSchedule();
+
+					(this.MainWindow as Scheduler.MainWindow).DrawSchedule(calendar);
+				}
+			};
+
+			this.InitializeComponent();
 		}
 	}
 }

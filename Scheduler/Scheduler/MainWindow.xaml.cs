@@ -24,5 +24,23 @@ namespace Scheduler
 		{
 			InitializeComponent();
 		}
+
+		public void DrawSchedule(Calendar calendar)
+		{
+			for (int gameWeek = 0; gameWeek < Calendar.GameWeeks; gameWeek++)
+			{
+				for (int game = 0; game < calendar.Schedule[gameWeek].Games.Count; game++)
+				{
+					var block = new TextBlock();
+					block.Style = this.Resources.FindName("Content") as Style;
+					block.SetValue(Grid.RowProperty, game + 1);
+					block.SetValue(Grid.ColumnProperty, gameWeek);
+					block.Text = calendar.Schedule[gameWeek].Games[game].ToString();
+
+					this.Schedule.Children.Add(block);
+				}
+			}
+
+		}
 	}
 }

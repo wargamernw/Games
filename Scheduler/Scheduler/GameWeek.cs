@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Scheduler
 {
-	class GameWeek
+	public class GameWeek
 	{
 		public List<Game> Games = new List<Game>();
 

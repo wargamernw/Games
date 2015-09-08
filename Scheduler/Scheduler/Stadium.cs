@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Scheduler
 {
 	[DataContract()]
-	class Stadium
+	public class Stadium
 	{
 		[DataMember]
 		public string Name { get; set; }

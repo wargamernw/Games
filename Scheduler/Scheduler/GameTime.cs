@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Scheduler
 {
-	class GameTime
+	public class GameTime
 	{
 		public GameDay GameDay { get; set; }
 

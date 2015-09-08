@@ -9,7 +9,7 @@ using System.Xml;
 
 namespace Scheduler
 {
-	class Model
+	public class Model
 	{
 		public const int TeamsMax = 4;
 

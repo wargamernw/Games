@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Scheduler
 {
-	class DateObject
+	public class DateObject
 	{
 		public Date Date { get; set; }
 
 		public bool Used { get; set; }
 	}
 
-	class GameDate
+	public class GameDate
 	{
 		public DateObject ThursdayNight = null;
 		public DateObject ThursdayAfternoon = null;

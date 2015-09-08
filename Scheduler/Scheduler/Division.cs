@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Scheduler
 {
-	enum Division
+	public enum Division
 	{
 		AFCEast,
 		AFCNorth,
