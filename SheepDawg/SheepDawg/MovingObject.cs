@@ -15,34 +15,15 @@
 	{
 		private MovingObjectController controller;
 
-		public MovingObjectData Data { get; set; }
-
 		public MovingObjectDataTemporal Pos { get; set; }
 
 		public MovingObject(MovingObjectController controller)
 		{
 			this.controller = controller;
-			this.Data = new MovingObjectData();
 			this.Pos = new MovingObjectDataTemporal();
 		}
 
 		public void Load(string dataFile)
-		{
-			try
-			{
-				using (var fs = new FileStream(dataFile, FileMode.OpenOrCreate))
-				{
-					DataContractSerializer ser = new DataContractSerializer(typeof(MovingObjectData));
-					this.Data = (MovingObjectData)ser.ReadObject(fs);
-				}
-			}
-			catch (Exception exc)
-			{
-				Console.WriteLine("The serialization operation failed: {0} StackTrace: {1}", exc.Message, exc.StackTrace);
-			}
-		}
-
-		public void LoadTemporal(string dataFile)
 		{
 			try
 			{
@@ -64,22 +45,6 @@
 			{
 				using (var fs = new FileStream(dataFile, FileMode.OpenOrCreate))
 				{
-					DataContractSerializer ser = new DataContractSerializer(typeof(MovingObjectData));
-					ser.WriteObject(fs, this.Data);
-				}
-			}
-			catch (Exception exc)
-			{
-				Console.WriteLine("The serialization operation failed: {0} StackTrace: {1}", exc.Message, exc.StackTrace);
-			}
-		}
-
-		public void SaveTemporal(string dataFile)
-		{
-			try
-			{
-				using (var fs = new FileStream(dataFile, FileMode.OpenOrCreate))
-				{
 					DataContractSerializer ser = new DataContractSerializer(typeof(MovingObjectDataTemporal));
 					ser.WriteObject(fs, this.Pos);
 				}
@@ -96,7 +61,7 @@
 
 			var delta = this.Pos.Destination - this.Pos.Location;
 
-			if (delta.LengthSquared > Math.Pow(this.Data.Radius * 1.5, 2.0)
+			if (delta.LengthSquared > Math.Pow(this.Pos.Radius * 1.5, 2.0)
 				|| impulse.LengthSquared > 0)
 			{
 				var dist = Math.Sqrt(delta.X * delta.X + delta.Y * delta.Y);
@@ -130,26 +95,26 @@
 		private void CheckVelocity(double dist, double elapsed)
 		{
 			// How long to reach 0;
-			var impulses = this.Pos.Velocity / this.Data.Accelleration;
+			var impulses = this.Pos.Velocity / this.Pos.Accelleration;
 
 			var drift = this.Pos.Velocity * impulses;
 
 			// Slow down
 			if (dist < drift)
 			{
-				this.Pos.Velocity -= this.Data.Accelleration * elapsed;
+				this.Pos.Velocity -= this.Pos.Accelleration * elapsed;
 
-				if (this.Pos.Velocity < this.Data.Accelleration * elapsed)
+				if (this.Pos.Velocity < this.Pos.Accelleration * elapsed)
 				{
-					this.Pos.Velocity = this.Data.Accelleration * elapsed;
+					this.Pos.Velocity = this.Pos.Accelleration * elapsed;
 				}
 			}
 			// Speed up
-			else if (this.Pos.Velocity < this.Data.MaxVelocity
+			else if (this.Pos.Velocity < this.Pos.MaxVelocity
 				&& (dist > drift * 2
 					|| this.Pos.Velocity == 0.0))
 			{
-				this.Pos.Velocity = Math.Min(this.Data.MaxVelocity, this.Pos.Velocity + this.Data.Accelleration * elapsed);
+				this.Pos.Velocity = Math.Min(this.Pos.MaxVelocity, this.Pos.Velocity + this.Pos.Accelleration * elapsed);
 			}
 		}
 
@@ -173,17 +138,17 @@
 				deltaFacing += Math.PI * 2.0;
 			}
 
-			if (Math.Abs(this.Pos.Facing - targetFacing) < this.Data.TurnRate * elapsed)
+			if (Math.Abs(this.Pos.Facing - targetFacing) < this.Pos.TurnRate * elapsed)
 			{
 				this.Pos.Facing = targetFacing;
 			}
 			else if (deltaFacing > 0)
 			{
-				this.Pos.Facing += this.Data.TurnRate * elapsed;
+				this.Pos.Facing += this.Pos.TurnRate * elapsed;
 			}
 			else if (deltaFacing < 0)
 			{
-				this.Pos.Facing -= this.Data.TurnRate * elapsed;
+				this.Pos.Facing -= this.Pos.TurnRate * elapsed;
 			}
 		}
 
@@ -197,12 +162,12 @@
 
 				if (delta.LengthSquared > 0)
 				{
-					if (delta.LengthSquared < Math.Pow(obj.Data.Radius + this.Data.Radius, 2.0))
+					if (delta.LengthSquared < Math.Pow(obj.Pos.Radius + this.Pos.Radius, 2.0))
 					{
 						delta.Normalize();
 						push += delta * 1.2;
 					}
-					else if (delta.LengthSquared < Math.Pow(obj.Data.Radius * 2.0 + this.Data.Radius * 2.0, 2.0))
+					else if (delta.LengthSquared < Math.Pow(obj.Pos.Radius * 2.0 + this.Pos.Radius * 2.0, 2.0))
 					{
 						delta.Normalize();
 						push += delta / 2.0;

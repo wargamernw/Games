@@ -61,12 +61,12 @@
 			System.IO.Directory.CreateDirectory(path);
 			
 			var dog = new MovingObject(null);
-			dog.Data.SetProperties(100, Colors.Blue, 50, 5, Math.PI);
+			dog.Pos.SetProperties(100, Colors.Blue, 50, 5, Math.PI);
 			dog.Save(path + "/SheepDog.xml");
 
 
 			var sheep = new MovingObject(null);
-			sheep.Data.SetProperties(100, Colors.White, 50, 5, Math.PI);
+			sheep.Pos.SetProperties(100, Colors.White, 50, 5, Math.PI);
 			sheep.Save(path + "/Sheep.xml");
 		}
 

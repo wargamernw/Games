@@ -10,7 +10,7 @@
 	using System.Windows.Media;
 
 	[DataContract()]
-	public class MovingObjectDataTemporal
+	public class MovingObjectDataTemporal : MovingObjectData
 	{
 		[DataMember]
 		public Point Location { get; set; }

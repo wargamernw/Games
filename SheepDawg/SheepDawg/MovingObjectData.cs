@@ -10,6 +10,7 @@
 	using System.Windows.Media;
 
 	[DataContract()]
+    [KnownType(typeof(MovingObjectDataTemporal))]
 	public class MovingObjectData
 	{
 		// Pixel Points per second/second

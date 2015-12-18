@@ -32,16 +32,16 @@
 			{
 				foreach (var obj in app.GetDrawList())
 				{
-					var brush = new SolidColorBrush(obj.Data.Color);
+					var brush = new SolidColorBrush(obj.Pos.Color);
 
-					dc.DrawEllipse(new SolidColorBrush(), new Pen(brush, 1), obj.Pos.Location, obj.Data.Radius, obj.Data.Radius);
+					dc.DrawEllipse(new SolidColorBrush(), new Pen(brush, 1), obj.Pos.Location, obj.Pos.Radius, obj.Pos.Radius);
 
 					Vector facing = new Vector();
 
 					facing.X = Math.Cos(obj.Pos.Facing);
 					facing.Y = Math.Sin(obj.Pos.Facing);
 
-					facing *= obj.Data.Radius;
+					facing *= obj.Pos.Radius;
 
 					dc.DrawLine(new Pen(brush, 1), obj.Pos.Location, obj.Pos.Location + facing);
 				}
